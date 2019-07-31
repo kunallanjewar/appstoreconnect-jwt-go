@@ -21,8 +21,15 @@ var (
 )
 
 type Config struct {
-	ISS       string
-	KID       string
+	ISS string
+	KID string
+	// ExpiresIn defines when the token should expire.
+	// It is AppStore's responsibility to enforce token expiration check.
+	// This field is only used to set `exp` field in Claims
+	// defined at https://tools.ietf.org/html/rfc7519#section-4.1.4.
+	//
+	// This field should not be set more than 20 minutes in the future
+	// for AppStore to consider it valid.
 	ExpiresIn time.Duration
 	AUD       string
 	PK        string
