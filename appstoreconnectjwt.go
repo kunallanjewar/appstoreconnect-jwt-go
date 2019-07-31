@@ -40,7 +40,7 @@ type Client struct {
 	token  *jwt.Token
 	claims *jwt.StandardClaims
 	cfg    *Config
-	lock   sync.RWMutex
+	lock   sync.Mutex
 }
 
 // New is a constructor that creates new client with valid jwt token.
@@ -69,6 +69,9 @@ func (c *Client) expireDuration() time.Duration {
 // newIfExpired generates a new bearer token only if previously issued token is expired.
 // This method does not handle clock skew.
 func (c *Client) newIfExpired() error {
+	defer c.lock.Unlock()
+	c.lock.Lock()
+
 	if c.bearer == "" {
 		if err := c.newBearerTokenString(); err != nil {
 			return err

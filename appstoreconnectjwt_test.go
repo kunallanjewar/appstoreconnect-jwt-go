@@ -137,10 +137,50 @@ func TestBearerToken(t *testing.T) {
 	}
 }
 
-func TestValidateToken(t *testing.T) {
-	t.Log("Todo")
-}
-
 func TestTokenReuse(t *testing.T) {
-	t.Log("Todo")
+	var tc1, _ = New(&Config{
+		ISS:       "ISS",
+		KID:       "KID",
+		ExpiresIn: 50 * time.Nanosecond,
+		AUD:       "AUD",
+		PK:        privateKeyValidFake,
+	})
+
+	var tc2, _ = New(&Config{
+		ISS:       "ISS",
+		KID:       "KID",
+		ExpiresIn: 1 * time.Minute,
+		AUD:       "AUD",
+		PK:        privateKeyValidFake,
+	})
+
+	tests := []struct {
+		name     string
+		cli      *Client
+		expected bool
+	}{
+		{"ExpiredGetNewToken", tc1, false},
+		{"NotExpiredGetSameToken", tc2, true},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			switch tt.name {
+			case "ExpiredGetNewToken":
+				tokenA, _ := tt.cli.BearerToken()
+				tokenB, _ := tt.cli.BearerToken()
+				isSame := (tokenA == tokenB)
+				if isSame {
+					t.Errorf(unexpectedResult, isSame, tt.expected)
+				}
+			case "NotExpiredGetSameToken":
+				tokenA, _ := tt.cli.BearerToken()
+				tokenB, _ := tt.cli.BearerToken()
+				isSame := (tokenA == tokenB)
+				if !isSame {
+					t.Errorf(unexpectedResult, isSame, tt.expected)
+				}
+			}
+		})
+	}
 }
