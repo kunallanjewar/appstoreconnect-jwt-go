@@ -8,7 +8,7 @@
 
 AppStoreConnect-JWT-Go is a Go package that provides an easy way generate JWT token needed for accessing AppStoreConnect API. This package handles token reuse (returns same token if previously issues token was not expired) and is thread safe.
 
-ApStoreConnect JWT Token [requirements](https://developer.apple.com/documentation/appstoreconnectapi/generating_tokens_for_api_requests).
+AppStoreConnect JWT Token [requirements](https://developer.apple.com/documentation/appstoreconnectapi/generating_tokens_for_api_requests).
 
 ## Example
 
