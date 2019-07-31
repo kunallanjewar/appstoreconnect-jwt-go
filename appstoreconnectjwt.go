@@ -15,7 +15,7 @@ import (
 
 var (
 	ErrPrivateKeyNotValidPEM   = errors.New("pk is not a valid PEM type")
-	ErrPrivateKeyNotValidPKCS8 = errors.New(("pk must be a encoded PKCS#8 type"))
+	ErrPrivateKeyNotValidPKCS8 = errors.New("pk must be a encoded PKCS#8 type")
 	ErrPrivateKeyNotECDSA      = errors.New("pk must be of ECDSA type")
 	ErrConfigIsNil             = errors.New("config is nil")
 )
